@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cricket on Rithvik</title>
+    <link>https://rithvik78.github.io/tags/cricket/</link>
+    <description>Recent content in Cricket on Rithvik</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2021 Rithvik ❤️ from HUGO.</copyright>
+    <lastBuildDate>Sun, 21 Nov 2021 17:38:11 +0530</lastBuildDate><atom:link href="https://rithvik78.github.io/tags/cricket/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cricket Score Prediction</title>
+      <link>https://rithvik78.github.io/blog/mlproject/</link>
+      <pubDate>Sun, 21 Nov 2021 17:38:11 +0530</pubDate>
+      
+      <guid>https://rithvik78.github.io/blog/mlproject/</guid>
+      <description>The above picture obviously lets you know how awful is accepting run rate as a solitary variable to foresee the last score in a restricted overs cricket match. In ODI and T-20 cricket, many elements assume a critical part in choosing what the last score will be. It will depend on some key factors such as number of runs scored in past overs, number of wickets left, score of striker and non-striker batter currently, nature of pitch, weather conditions&amp;hellip;</description>
+    </item>
+    
+  </channel>
+</rss>

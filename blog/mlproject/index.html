@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Author" content="Rithvik">
+    <meta name="keywords" content="hugo blog">
+    <link rel="stylesheet" href=https://rithvik78.github.io/css/syntax.css>
+    <link rel="stylesheet" href=https://rithvik78.github.io/css/style.css>
+    <script src="https://kit.fontawesome.com/1b7478c139.js" crossorigin="anonymous"></script>
+    <title>Rithvik</title>
+  </head><body><aside id="sidenav">
+    <header>
+    
+        <a href=https://rithvik78.github.io/><img src="https://rithvik78.github.io/avatar.png" alt="avatar"></a>
+        
+    
+
+    <a id="branding" href=https://rithvik78.github.io/>
+        
+            Rithvik
+        
+    </a>
+    </header>
+
+    <nav>
+        
+            		
+            <a href="/"
+                
+            >
+                <i class="fas fa-home fa-sm"></i>
+                <span>home</span>
+            </a>
+        
+            		
+            <a href="/blog/"
+                
+            >
+                <i class="fas fa-keyboard fa-ms"></i>
+                <span>blog</span>
+            </a>
+        
+            		
+            <a href="/tags"
+                
+            >
+                <i class="fas fa-tags fa-ms"></i>
+                <span>tags</span>
+            </a>
+        
+            		
+            <a href="https://github.com/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-github fa-ms"></i>
+                <span>github</span>
+            </a>
+        
+            		
+            <a href="https://twitter.com/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-twitter fa-ms"></i>
+                <span>twitter</span>
+            </a>
+        
+            		
+            <a href="https://dev.to/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-dev fa-ms"></i>
+                <span>dev</span>
+            </a>
+        
+            		
+            <a href="/contact"
+                
+            >
+                <i class="far fa-envelope"></i>
+                <span>contact</span>
+            </a>
+        
+    </nav>
+</aside>
+<main id="main">
+            <a href="javascript:void(0)" id="closebtn" onclick="navToggle()"><i class="fas fa-bars fa-lg"></i></a>
+            <div class="content">
+    
+    <h1 id="title">Cricket Score Prediction</h1>
+    
+      
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#data-collection">Data Collection</a></li>
+    <li><a href="#prepare-data-for-consumption">Prepare Data for consumption</a>
+      <ul>
+        <li><a href="#importing-libraries">Importing Libraries</a></li>
+        <li><a href="#meet-and-greet-data">Meet and Greet Data</a></li>
+        <li><a href="#data-visualization">Data Visualization</a></li>
+      </ul>
+    </li>
+    <li><a href="#splitting-data-into-training-and-testing-set">Splitting data into training and testing set</a></li>
+    <li><a href="#model">Model</a>
+      <ul>
+        <li><a href="#linear-regression">Linear Regression</a></li>
+        <li><a href="#random-forest">Random Forest</a></li>
+        <li><a href="#k-nearest-neighbours">K Nearest Neighbours</a></li>
+        <li><a href="#lasso-regression">Lasso Regression</a></li>
+      </ul>
+    </li>
+    <li><a href="#testing">Testing</a>
+      <ul>
+        <li><a href="#mathematical-intuition">Mathematical Intuition</a></li>
+        <li><a href="#algorithm">Algorithm</a></li>
+        <li><a href="#implementation">Implementation</a></li>
+        <li><a href="#fitting-the-model">Fitting the model</a></li>
+      </ul>
+    </li>
+    <li><a href="#authors">Authors</a></li>
+  </ul>
+</nav>
+    <p><img src="https://i.imgur.com/MDX6J0B.jpg" alt=""></p>
+<p>The above picture obviously lets you know how awful is accepting run rate as a solitary variable to foresee the last score in a restricted overs cricket match. In ODI and T-20 cricket, many elements assume a critical part in choosing what the last score will be. It will depend on some key factors such as number of runs scored in past overs, number of wickets left, score of striker and non-striker batter currently, nature of pitch, weather conditions&hellip;</p>
+<h2 id="data-collection">Data Collection</h2>
+<p>I have downloaded the dataset from <a href="https://cricsheet.org/downloads/">cricsheet</a>. The site gives us ball by ball subtleties of matches. We then,  composed a custom code to just incorporate a portion of the highlights which we will utilize.</p>
+<p>The dataset contains ball by ball coverage of:</p>
+<ul>
+<li>1188 ODI matches: data/odi.csv</li>
+<li>1474 T-20 matches: data/t20.csv</li>
+<li>617 IPL matches: data/ipl.csv</li>
+</ul>
+<p>Each dataset comprises of following features:</p>
+<ul>
+<li>mid: Unique ID for match</li>
+<li>date: Date when the match was played</li>
+<li>venue: Stadium where the match was played</li>
+<li>bat_team: Batting team</li>
+<li>bowl_team: Bowling team</li>
+<li>batsman: Striker batter (currently replaced batsman as batter)</li>
+<li>bowler: Bowler</li>
+<li>runs: runs scored by batting team at that instance</li>
+<li>wickets: wickets fallen at that instance</li>
+<li>overs: overs bowled at that instance</li>
+<li>runs_last_5: Total runs scored in last 5 overs</li>
+<li>wickets_last_5: Total wickets that fell in last 5 overs</li>
+<li>striker: max(runs scored by striker, runs scored by non-striker)</li>
+<li>non-striker: min(runs scored by striker, runs scored by non-striker)</li>
+<li>total: Total runs scored by batting team after first innings</li>
+</ul>
+<h2 id="prepare-data-for-consumption">Prepare Data for consumption</h2>
+<h3 id="importing-libraries">Importing Libraries</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">pandas.plotting</span> <span class="kn">import</span> <span class="n">scatter_matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
+</code></pre></div><h3 id="meet-and-greet-data">Meet and Greet Data</h3>
+<p>This is the meet and greet step. Get to know your data by first name and learn a little bit about it. What does it look like (datatype and values), what makes it tick (independent/feature variables(s)), what’s its goals in life (dependent/target variable(s)).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/odi.csv&#39;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,[</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span> <span class="c1">#Input features</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">14</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="c1">#Label</span>
+</code></pre></div><p>I have utilized &lsquo;odi.csv&rsquo; datasete here for anticipating scores in ODI cricket. We used only runs, wickets, overs, striker, non-striker as all the other features didn’t make much difference in outcomes.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</code></pre></div><p><code>Out:</code></p>
+<pre tabindex="0"><code>(350899, 15)
+   mid        date                                 venue bat_team bowl_team  \
+0    1  2006-06-13  Civil Service Cricket Club, Stormont  England   Ireland   
+1    1  2006-06-13  Civil Service Cricket Club, Stormont  England   Ireland   
+2    1  2006-06-13  Civil Service Cricket Club, Stormont  England   Ireland   
+3    1  2006-06-13  Civil Service Cricket Club, Stormont  England   Ireland   
+4    1  2006-06-13  Civil Service Cricket Club, Stormont  England   Ireland   
+
+          batsman       bowler  runs  wickets  overs  runs_last_5  \
+0  ME Trescothick  DT Johnston     0        0    0.1            0   
+1  ME Trescothick  DT Johnston     0        0    0.2            0   
+2  ME Trescothick  DT Johnston     4        0    0.3            4   
+3  ME Trescothick  DT Johnston     6        0    0.4            6   
+4  ME Trescothick  DT Johnston     6        0    0.5            6   
+
+   wickets_last_5  striker  non-striker  total  
+0               0        0            0    301  
+1               0        0            0    301  
+2               0        0            0    301  
+3               0        0            0    301  
+4               0        0            0    301 
+</code></pre><h3 id="data-visualization">Data Visualization</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">scatter_matrix</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>                       <span class="c1">#histogram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>  
+</code></pre></div><p><code>Out:</code>
+<img src="https://i.imgur.com/Hm4QmSY.png" alt=""></p>
+<h2 id="splitting-data-into-training-and-testing-set">Splitting data into training and testing set</h2>
+<p>We have used 75/25 for training and testing respectively.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">sc</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>
+</code></pre></div><p><code>Out:</code></p>
+<pre tabindex="0"><code>(array([[ 0.09370533,  0.44565669,  0.18010786,  0.84849475,  0.3048047 ],
+        [ 0.01649844,  0.44565669, -0.2551692 , -0.89540433, -0.76114359],
+        [ 1.97240628,  1.31445566,  1.61933043,  0.35023787, -0.56127828],
+        ...,
+        [ 0.55694666, -0.85754176,  0.03267531,  2.02295739,  2.56994483],
+        [-0.53681759,  0.01125721, -0.47982834, -0.9309941 , -0.76114359],
+        [-0.8971164 , -0.85754176, -0.90808481, -0.75304522, -0.02830414]]),
+ array([[-0.72983481,  1.31445566, -0.2692104 , -0.468327  , -0.82776536],
+        [-0.43387507,  0.88005618, -0.03753067, -0.21919856,  0.1049394 ],
+        [-1.23167959, -1.29194125, -1.30123829, -0.78863499, -0.69452182],
+        ...,
+        [-0.44674289, -1.29194125, -0.96424959,  0.13669921,  1.70386184],
+        [-1.41182899, -1.29194125, -1.66630938, -1.2513021 , -0.82776536],
+        [-1.30888647, -1.29194125, -1.39250606, -1.00217366, -0.42803475]]),
+ array([252, 230, 295, ..., 401, 302, 247]),
+ array([ 80, 220, 256, ..., 307, 336, 321]))
+</code></pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">X</span><span class="p">,</span><span class="n">y</span>
+</code></pre></div><p><code>Out:</code></p>
+<pre tabindex="0"><code>(array([[0.00e+00, 0.00e+00, 1.00e-01, 0.00e+00, 0.00e+00],
+        [0.00e+00, 0.00e+00, 2.00e-01, 0.00e+00, 0.00e+00],
+        [4.00e+00, 0.00e+00, 3.00e-01, 0.00e+00, 0.00e+00],
+        ...,
+        [2.01e+02, 8.00e+00, 4.94e+01, 5.90e+01, 1.80e+01],
+        [2.02e+02, 8.00e+00, 4.95e+01, 5.90e+01, 1.80e+01],
+        [2.03e+02, 8.00e+00, 4.96e+01, 5.90e+01, 1.80e+01]]),
+ array([301, 301, 301, ..., 203, 203, 203]))
+</code></pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="k">def</span> <span class="nf">custom_accuracy</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_pred</span><span class="p">,</span><span class="n">thresold</span><span class="p">):</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">l</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">y_pred</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">y_test</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">thresold</span><span class="p">):</span>
+            <span class="n">right</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">right</span><span class="o">/</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div><p>This is a custom fuction defined for testing this model. Custom Accuracy is defined on the basis of difference between the predicted score and actual score. If this difference falls below a particular thresold, we count it as a correct prediction.</p>
+<p><strong>R-sqaured</strong> is a statistic that will give some information about the goodness of fit of a model. In regression, the R-squared coefficient of determination is a statistical measure of how well the regression predictions approximate the real data points. An R-squared value of 1 indicates that the regression predictions perfectly fit the data.</p>
+<h2 id="model">Model</h2>
+<h3 id="linear-regression">Linear Regression</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">lin</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">lin</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">lin</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">lin</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;R-squared value:&#34;</span> <span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<span class="n">lin_acc</span><span class="o">=</span><span class="n">custom_accuracy</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_pred</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Custom accuracy:&#34;</span> <span class="p">,</span> <span class="n">lin_acc</span><span class="p">)</span>
+</code></pre></div><p><code>Out:</code></p>
+<pre tabindex="0"><code>R-squared value: 52.737657811129445
+Custom accuracy: 51.78797378170419
+</code></pre><h3 id="random-forest">Random Forest</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">ran</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">max_features</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">ran</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">ran</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">ran</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;R-squared value:&#34;</span> <span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<span class="n">ran_acc</span><span class="o">=</span><span class="n">custom_accuracy</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_pred</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Custom accuracy:&#34;</span> <span class="p">,</span> <span class="n">ran_acc</span><span class="p">)</span>
+</code></pre></div><p><code>Out:</code></p>
+<pre tabindex="0"><code>R-squared value: 79.56968334784949
+Custom accuracy: 81.6129951553149
+</code></pre><h3 id="k-nearest-neighbours">K Nearest Neighbours</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;R-squared value:&#34;</span> <span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<span class="n">knn_acc</span><span class="o">=</span><span class="n">custom_accuracy</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_pred</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Custom accuracy:&#34;</span> <span class="p">,</span> <span class="n">knn_acc</span><span class="p">)</span>
+</code></pre></div><p><code>Out:</code></p>
+<pre tabindex="0"><code>R-squared value: 64.7044742091764
+Custom accuracy: 77.92533485323455
+</code></pre><h3 id="lasso-regression">Lasso Regression</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">las</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mf">10e5</span><span class="p">)</span>
+<span class="n">las</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">las</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">las</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;R-squared value:&#34;</span> <span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<span class="n">las_acc</span><span class="o">=</span><span class="n">custom_accuracy</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_pred</span><span class="p">,</span><span class="mi">37</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Custom accuracy:&#34;</span> <span class="p">,</span> <span class="n">las_acc</span><span class="p">)</span>
+</code></pre></div><p><code>Out:</code></p>
+<pre tabindex="0"><code>R-squared value: 52.73751630496808
+Custom accuracy: 67.71045882017668
+</code></pre><h2 id="testing">Testing</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">cur_score</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Current Score: &#39;</span><span class="p">))</span>
+<span class="n">cur_wickets</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Current  Wickets: &#39;</span><span class="p">))</span>
+<span class="n">cur_overs</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Current Overs: &#39;</span><span class="p">))</span>
+<span class="n">cur_striker</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Current Striker Score: &#39;</span><span class="p">))</span>
+<span class="n">cur_non_striker</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Current Non-Striker Score: &#39;</span><span class="p">))</span>
+</code></pre></div><p><code>Out:</code></p>
+<pre tabindex="0"><code>Current Score: 130
+Current  Wickets: 7
+Current Overs: 19
+Current Striker Score: 12
+Current Non-Striker Score: 21
+</code></pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="k">if</span> <span class="n">cur_score</span><span class="o">&lt;</span><span class="n">cur_striker</span><span class="o">+</span><span class="n">cur_non_striker</span> <span class="ow">or</span> <span class="n">cur_overs</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">cur_overs</span><span class="o">&gt;</span><span class="mi">50</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error in Input&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">new_prediction</span> <span class="o">=</span> <span class="n">lin</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cur_score</span><span class="p">,</span><span class="n">cur_wickets</span><span class="p">,</span><span class="n">cur_overs</span><span class="p">,</span><span class="n">cur_striker</span><span class="p">,</span><span class="n">cur_non_striker</span><span class="p">]])))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Linear Regression - Prediction score:&#34;</span> <span class="p">,</span> <span class="n">new_prediction</span><span class="p">)</span>
+    <span class="n">new_prediction</span> <span class="o">=</span> <span class="n">ran</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cur_score</span><span class="p">,</span><span class="n">cur_wickets</span><span class="p">,</span><span class="n">cur_overs</span><span class="p">,</span><span class="n">cur_striker</span><span class="p">,</span><span class="n">cur_non_striker</span><span class="p">]])))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Random Forest Regression - Prediction score:&#34;</span> <span class="p">,</span> <span class="n">new_prediction</span><span class="p">)</span>
+    <span class="n">new_prediction</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cur_score</span><span class="p">,</span><span class="n">cur_wickets</span><span class="p">,</span><span class="n">cur_overs</span><span class="p">,</span><span class="n">cur_striker</span><span class="p">,</span><span class="n">cur_non_striker</span><span class="p">]])))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;K Nearest Neighbours - Prediction score:&#34;</span> <span class="p">,</span> <span class="n">new_prediction</span><span class="p">)</span>
+    <span class="n">new_prediction</span> <span class="o">=</span> <span class="n">las</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cur_score</span><span class="p">,</span><span class="n">cur_wickets</span><span class="p">,</span><span class="n">cur_overs</span><span class="p">,</span><span class="n">cur_striker</span><span class="p">,</span><span class="n">cur_non_striker</span><span class="p">]])))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Lasso Regression - Prediction score:&#34;</span> <span class="p">,</span> <span class="n">new_prediction</span><span class="p">)</span>
+</code></pre></div><p><code>Out:</code></p>
+<pre tabindex="0"><code>Linear Regression - Prediction score: [234.70655237]
+Random Forest Regression - Prediction score: [185.76]
+K Nearest Neighbours - Prediction score: [130]
+Lasso Regression - Prediction score: [234.502072]
+</code></pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">a</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lin_acc</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ran_acc</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">knn_acc</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">las_acc</span><span class="p">)</span>
+<span class="n">b</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Linear&#39;</span><span class="p">,</span><span class="s1">&#39;Random Forest&#39;</span><span class="p">,</span><span class="s1">&#39;KNN&#39;</span><span class="p">,</span><span class="s1">&#39;LASSO&#39;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span><span class="n">width</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div><p><img src="https://i.imgur.com/5Ja0wLY.png" alt=""></p>
+<p>Comparing the accuracies of all four algorithms clearly shows that Random Forest Regression gives the highest accuracy</p>
+<p>I implemented Linear Regression from scratch without using <code>sklearn</code> functions</p>
+<p>Linear Regression is a supervised learning algorithm used to predict the real-valued output y based on the given input value x. It depicts the relationship between the dependent variable y and the independent variables xi  ( or features ).  The hypothetical function used for prediction is represented by h( x ).</p>
+<pre tabindex="0"><code> h( x ) = w * x + b  
+    
+  here, b is the bias.
+  x represents the feature vector
+  w represents the weight vector.
+</code></pre><h3 id="mathematical-intuition">Mathematical Intuition</h3>
+<p>The cost function (or loss function) is used to measure the performance of a machine learning model or quantifies the error between the expected values and the values predicted by our hypothetical function. The cost function for Linear Regression is represented by J.</p>
+<p><img src="https://i.imgur.com/dLjGc1w.png" alt=""></p>
+<pre tabindex="0"><code>Here, m is the total number of training examples in the dataset.
+y^i represents the value of target variable for ith training example.
+</code></pre><h3 id="algorithm">Algorithm</h3>
+<pre tabindex="0"><code>repeat until convergence  {
+       tmpi = wi - alpha * dwi          
+       wi = tmpi              
+}
+where alpha is the learning rate.
+</code></pre><h3 id="implementation">Implementation</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="k">class</span> <span class="nc">LinearRegression</span><span class="p">()</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">iterations</span> <span class="p">)</span> <span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span>
+              
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="p">)</span> <span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="p">)</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_weights</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+      
+    <span class="k">def</span> <span class="nf">update_weights</span><span class="p">(</span> <span class="bp">self</span> <span class="p">)</span> <span class="p">:</span>
+        <span class="n">Y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="p">)</span>
+        <span class="n">dW</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">-</span> <span class="n">Y_pred</span> <span class="p">)</span>  <span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">-</span> <span class="n">Y_pred</span> <span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">dW</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">db</span>
+        <span class="k">return</span> <span class="bp">self</span>
+      
+      
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">X</span> <span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+</code></pre></div><h3 id="fitting-the-model">Fitting the model</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">new_prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cur_score</span><span class="p">,</span><span class="n">cur_wickets</span><span class="p">,</span><span class="n">cur_overs</span><span class="p">,</span><span class="n">cur_striker</span><span class="p">,</span><span class="n">cur_non_striker</span><span class="p">]])))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Linear Regression - Prediction score:&#34;</span> <span class="p">,</span> <span class="n">new_prediction</span><span class="p">)</span>
+</code></pre></div><pre tabindex="0"><code>model_acc=custom_accuracy(y_test,y_pred,25)
+print(&quot;Custom accuracy:&quot; , lin_acc)
+</code></pre><p><code>Out:</code> <code>Custom accuracy: 51.78797378170419</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">c</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lin_acc</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model_acc</span><span class="p">)</span>
+<span class="n">d</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sklearn Linear&#39;</span><span class="p">,</span><span class="s1">&#39;Scratch Linear&#39;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span><span class="n">width</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div><p><code>Out:</code>
+<img src="https://i.imgur.com/gSLd4nm.png" alt=""></p>
+<h2 id="authors">Authors</h2>
+<ul>
+<li><a href="https://twitter.com/MvpAbhishek">ABhishek Bharadwaj</a></li>
+<li><a href="https://twitter.com/SSVatsav">Sampat</a></li>
+<li><a href="https://twitter.com/">RV Abhishek Barla</a></li>
+<li><a href="https://twitter.com/rith_vik_7">Rithvik</a></li>
+</ul>
+<p>Resources:</p>
+<ul>
+<li><a href="https://www.geeksforgeeks.org/linear-regression-implementation-from-scratch-using-python/">Geeks for Geeks</a></li>
+</ul>
+
+    
+    <div class="nav-next-prev">
+        <div class="nav-prev">
+            
+                <a href="https://rithvik78.github.io/blog/dipproject/"><i class="fas fa-chevron-left"></i></a>
+            
+        </div>
+        <a class="nav-top" href="#">top</i></a>
+        <div class="nav-next">
+            
+                <a href="https://rithvik78.github.io/blog/fdsproject/"><i class="fas fa-chevron-right"></i></a>
+            
+        </div>
+    </div>
+    
+
+            </div><footer>
+<div class="footer-content">
+
+
+<p class="copyright meta">Copyright © 2021 Rithvik ❤️ from HUGO.</p>
+
+</div>
+</footer></main>
+    </body>
+    <script src=https://rithvik78.github.io/js/navbutton.js></script>
+</html>

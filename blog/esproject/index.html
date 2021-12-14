@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Author" content="Rithvik">
+    <meta name="keywords" content="hugo blog">
+    <link rel="stylesheet" href=https://rithvik78.github.io/css/syntax.css>
+    <link rel="stylesheet" href=https://rithvik78.github.io/css/style.css>
+    <script src="https://kit.fontawesome.com/1b7478c139.js" crossorigin="anonymous"></script>
+    <title>Rithvik</title>
+  </head><body><aside id="sidenav">
+    <header>
+    
+        <a href=https://rithvik78.github.io/><img src="https://rithvik78.github.io/avatar.png" alt="avatar"></a>
+        
+    
+
+    <a id="branding" href=https://rithvik78.github.io/>
+        
+            Rithvik
+        
+    </a>
+    </header>
+
+    <nav>
+        
+            		
+            <a href="/"
+                
+            >
+                <i class="fas fa-home fa-sm"></i>
+                <span>home</span>
+            </a>
+        
+            		
+            <a href="/blog/"
+                
+            >
+                <i class="fas fa-keyboard fa-ms"></i>
+                <span>blog</span>
+            </a>
+        
+            		
+            <a href="/tags"
+                
+            >
+                <i class="fas fa-tags fa-ms"></i>
+                <span>tags</span>
+            </a>
+        
+            		
+            <a href="https://github.com/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-github fa-ms"></i>
+                <span>github</span>
+            </a>
+        
+            		
+            <a href="https://twitter.com/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-twitter fa-ms"></i>
+                <span>twitter</span>
+            </a>
+        
+            		
+            <a href="https://dev.to/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-dev fa-ms"></i>
+                <span>dev</span>
+            </a>
+        
+            		
+            <a href="/contact"
+                
+            >
+                <i class="far fa-envelope"></i>
+                <span>contact</span>
+            </a>
+        
+    </nav>
+</aside>
+<main id="main">
+            <a href="javascript:void(0)" id="closebtn" onclick="navToggle()"><i class="fas fa-bars fa-lg"></i></a>
+            <div class="content">
+    
+    <h1 id="title">Interfacing GPS with LPC2148 ARM</h1>
+    
+      
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#objective">Objective</a></li>
+    <li><a href="#block-diagram">Block Diagram</a></li>
+    <li><a href="#circuit-diagram">Circuit Diagram</a></li>
+    <li><a href="#pin-assignment-with-lpc2148">Pin Assignment with LPC2148</a></li>
+    <li><a href="#program">Program</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#authors">Authors</a></li>
+  </ul>
+</nav>
+    <h2 id="objective">Objective</h2>
+<p><img src="https://i.imgur.com/TV6lZdj.jpg" alt=""></p>
+<p>A global positioning system (GPS) receiver is used to get precise geographical location by receiving information from satellites. It not only gives information about location but also information like time, date, height and speed. It is so useful that most smartphones are embedded with it.</p>
+<h2 id="block-diagram">Block Diagram</h2>
+<p><img src="https://i.imgur.com/EnEUuhj.png" alt=""></p>
+<p>The GPS module continuously transmits serial data in the form of sentences according to NMEA standards. The latitude and longitude values of the location are contained in the GPGGA sentence.To communicate over UART or USART, we just need three basic signals which are, namely, RXD (receive), TXD (transmit), GND (common ground).</p>
+<h2 id="circuit-diagram">Circuit Diagram</h2>
+<p><img src="https://i.imgur.com/2VGR2Ss.png" alt=""></p>
+<p>Working Principle</p>
+<p>We need to receive data from the satellite to the LPC2148 Primer Board by using a GPS module through UART0. The serial data is taken from the GPS module through MAX232 into the SBUF register of the LPC2148 microcontroller. The serial data from the GPS receiver is taken by using the Serial Interrupt of the controller. This data consists of a sequence of NMEA sentences from which GPGGA sentences are identified and processed.The first six bytes of the data received are compared with the pre-stored string and if matched then only data is further accounted for; otherwise the process is repeated again. From the comma delimited GPGGA sentence, latitude and longitude positions are extracted by finding the respective comma positions and extracting the data.</p>
+<h2 id="pin-assignment-with-lpc2148">Pin Assignment with LPC2148</h2>
+<p><img src="https://i.imgur.com/hbp36sC.png" alt=""></p>
+<h2 id="program">Program</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#define CR     0x0D
+</span><span class="cp">#include</span> <span class="cpf">&lt;LPC21xx.H&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">void</span> <span class="nf">init_serial</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">putchar</span> <span class="p">(</span><span class="kt">int</span> <span class="n">ch</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">getchar</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">test</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">Ptr</span> <span class="o">=</span> <span class="s">&#34;*** UART0 Demo ***</span><span class="se">\n\n\r</span><span class="s">Type Characters to be echoed!!</span><span class="se">\n\n\r</span><span class="s">&#34;</span><span class="p">;</span>
+    <span class="n">VPBDIV</span> <span class="o">=</span> <span class="mh">0x02</span><span class="p">;</span>   <span class="c1">// Divide Pclk by two
+</span><span class="c1"></span>    <span class="n">init_serial</span><span class="p">();</span>
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">Ptr</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">putchar</span><span class="p">(</span><span class="o">*</span><span class="n">Ptr</span><span class="o">++</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">putchar</span><span class="p">(</span><span class="n">getchar</span><span class="p">());</span>  <span class="c1">// Echo terminal
+</span><span class="c1"></span>    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">init_serial</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PINSEL0</span>  <span class="o">=</span> <span class="mh">0x00000005</span><span class="p">;</span> <span class="c1">// Enable RxD0 and TxD0
+</span><span class="c1"></span>    <span class="n">U0LCR</span>    <span class="o">=</span> <span class="mh">0x00000083</span><span class="p">;</span>   <span class="c1">//8 bits, no Parity, 1 Stop bit
+</span><span class="c1"></span>    <span class="n">U0DLL</span>    <span class="o">=</span> <span class="mh">0x000000C3</span><span class="p">;</span> <span class="c1">//9600 Baud Rate @ 30MHz VPB Clock
+</span><span class="c1"></span>    <span class="n">U0LCR</span>    <span class="o">=</span> <span class="mh">0x00000003</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">putchar</span> <span class="p">(</span><span class="kt">int</span> <span class="n">ch</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ch</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">U0LSR</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">));</span>
+        <span class="n">U0THR</span> <span class="o">=</span> <span class="n">CR</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">U0LSR</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">));</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">U0THR</span> <span class="o">=</span> <span class="n">ch</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">getchar</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">U0LSR</span> <span class="o">&amp;</span> <span class="mh">0x01</span><span class="p">));</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">U0RBR</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>GPS is used in many fields such as  Agriculture, Aviation, Marine, Public Safety, Rail, Roads &amp; Highways, Space, Surveying &amp; Mapping.Since the GPS system gets calibrated on its own, anyone can use it.As GPS follows trilateration which means  data from three satellites uses  to locate a specific point on the earth , so its user friendly.</p>
+<h2 id="authors">Authors</h2>
+<ul>
+<li><a href="https://twitter.com/MvpAbhishek">ABhishek Bharadwaj</a></li>
+<li><a href="https://twitter.com/SSVatsav">Sampat</a></li>
+<li><a href="https://twitter.com/">RV Abhishek Barla</a></li>
+<li><a href="https://twitter.com/rith_vik_7">Rithvik</a></li>
+</ul>
+
+    
+    <div class="nav-next-prev">
+        <div class="nav-prev">
+            
+                <a href="https://rithvik78.github.io/blog/fdsproject/"><i class="fas fa-chevron-left"></i></a>
+            
+        </div>
+        <a class="nav-top" href="#">top</i></a>
+        <div class="nav-next">
+            
+                <a href="https://rithvik78.github.io/blog/urlshortener/"><i class="fas fa-chevron-right"></i></a>
+            
+        </div>
+    </div>
+    
+
+            </div><footer>
+<div class="footer-content">
+
+
+<p class="copyright meta">Copyright © 2021 Rithvik ❤️ from HUGO.</p>
+
+</div>
+</footer></main>
+    </body>
+    <script src=https://rithvik78.github.io/js/navbutton.js></script>
+</html>

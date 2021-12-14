@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>url-shortener on Rithvik</title>
+    <link>https://rithvik78.github.io/tags/url-shortener/</link>
+    <description>Recent content in url-shortener on Rithvik</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2021 Rithvik ❤️ from HUGO.</copyright>
+    <lastBuildDate>Sun, 12 Dec 2021 16:13:30 +0530</lastBuildDate><atom:link href="https://rithvik78.github.io/tags/url-shortener/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Seven URL Shortener</title>
+      <link>https://rithvik78.github.io/blog/urlshortener/</link>
+      <pubDate>Sun, 12 Dec 2021 16:13:30 +0530</pubDate>
+      
+      <guid>https://rithvik78.github.io/blog/urlshortener/</guid>
+      <description>Introduction Flask is a framework for building web applications utilizing Python and SQLite with sqlalchemy is a database engine that can be used to store application data.
+Here, We wil be buliding a URL shortener, a service that takes any URL and generates a short URL, similar to tinyurl or bit.ly.
+We are going to generate random strings for the alias using python [library](random(https://docs.python.org/3/library/random.html).
+We will be using Flask, SQLite to build your URL shortener.</description>
+    </item>
+    
+  </channel>
+</rss>

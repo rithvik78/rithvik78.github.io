@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rithvik</title>
+    <link>https://rithvik78.github.io/</link>
+    <description>Recent content on Rithvik</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2021 Rithvik ❤️ from HUGO.</copyright>
+    <lastBuildDate>Sun, 12 Dec 2021 16:13:30 +0530</lastBuildDate><atom:link href="https://rithvik78.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Seven URL Shortener</title>
+      <link>https://rithvik78.github.io/blog/urlshortener/</link>
+      <pubDate>Sun, 12 Dec 2021 16:13:30 +0530</pubDate>
+      
+      <guid>https://rithvik78.github.io/blog/urlshortener/</guid>
+      <description>Introduction Flask is a framework for building web applications utilizing Python and SQLite with sqlalchemy is a database engine that can be used to store application data.
+Here, We wil be buliding a URL shortener, a service that takes any URL and generates a short URL, similar to tinyurl or bit.ly.
+We are going to generate random strings for the alias using python [library](random(https://docs.python.org/3/library/random.html).
+We will be using Flask, SQLite to build your URL shortener.</description>
+    </item>
+    
+    <item>
+      <title>Interfacing GPS with LPC2148 ARM</title>
+      <link>https://rithvik78.github.io/blog/esproject/</link>
+      <pubDate>Wed, 24 Nov 2021 14:03:57 +0530</pubDate>
+      
+      <guid>https://rithvik78.github.io/blog/esproject/</guid>
+      <description>Objective A global positioning system (GPS) receiver is used to get precise geographical location by receiving information from satellites. It not only gives information about location but also information like time, date, height and speed. It is so useful that most smartphones are embedded with it.
+Block Diagram The GPS module continuously transmits serial data in the form of sentences according to NMEA standards. The latitude and longitude values of the location are contained in the GPGGA sentence.</description>
+    </item>
+    
+    <item>
+      <title>Predicting the Survival of Titanic Passengers</title>
+      <link>https://rithvik78.github.io/blog/fdsproject/</link>
+      <pubDate>Wed, 24 Nov 2021 11:01:40 +0530</pubDate>
+      
+      <guid>https://rithvik78.github.io/blog/fdsproject/</guid>
+      <description>Define the Problem The sinking of the RMS Titanic is one of the most infamous shipwrecks in history. On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, killing 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international community and led to better safety regulations for ships. One of the reasons that the shipwreck led to such loss of life was that there were not enough lifeboats for the passengers and crew.</description>
+    </item>
+    
+    <item>
+      <title>Cricket Score Prediction</title>
+      <link>https://rithvik78.github.io/blog/mlproject/</link>
+      <pubDate>Sun, 21 Nov 2021 17:38:11 +0530</pubDate>
+      
+      <guid>https://rithvik78.github.io/blog/mlproject/</guid>
+      <description>The above picture obviously lets you know how awful is accepting run rate as a solitary variable to foresee the last score in a restricted overs cricket match. In ODI and T-20 cricket, many elements assume a critical part in choosing what the last score will be. It will depend on some key factors such as number of runs scored in past overs, number of wickets left, score of striker and non-striker batter currently, nature of pitch, weather conditions&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Age and Gender Detection</title>
+      <link>https://rithvik78.github.io/blog/dipproject/</link>
+      <pubDate>Sun, 21 Nov 2021 11:38:11 +0530</pubDate>
+      
+      <guid>https://rithvik78.github.io/blog/dipproject/</guid>
+      <description>Objective To build a gender and age detector that can approximately guess the gender and age of the person (face) in a picture using Deep Learning on the Audience dataset.
+ Detect faces Classify into Male/Female Classify into one of the 8 age ranges, put the results on the image and display it.  Introduction Facial analysis from images has gained a lot of interest because it helps in several different problems like better ad targeting for customers, better content recommendation system, security surveillance, and other fields as well</description>
+    </item>
+    
+    <item>
+      <title>get in touch</title>
+      <link>https://rithvik78.github.io/contact/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://rithvik78.github.io/contact/</guid>
+      <description>  Send  </description>
+    </item>
+    
+  </channel>
+</rss>

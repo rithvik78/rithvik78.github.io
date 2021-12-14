@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Embedded Systems on Rithvik</title>
+    <link>https://rithvik78.github.io/tags/embedded-systems/</link>
+    <description>Recent content in Embedded Systems on Rithvik</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2021 Rithvik ❤️ from HUGO.</copyright>
+    <lastBuildDate>Wed, 24 Nov 2021 14:03:57 +0530</lastBuildDate><atom:link href="https://rithvik78.github.io/tags/embedded-systems/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Interfacing GPS with LPC2148 ARM</title>
+      <link>https://rithvik78.github.io/blog/esproject/</link>
+      <pubDate>Wed, 24 Nov 2021 14:03:57 +0530</pubDate>
+      
+      <guid>https://rithvik78.github.io/blog/esproject/</guid>
+      <description>Objective A global positioning system (GPS) receiver is used to get precise geographical location by receiving information from satellites. It not only gives information about location but also information like time, date, height and speed. It is so useful that most smartphones are embedded with it.
+Block Diagram The GPS module continuously transmits serial data in the form of sentences according to NMEA standards. The latitude and longitude values of the location are contained in the GPGGA sentence.</description>
+    </item>
+    
+  </channel>
+</rss>

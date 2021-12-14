@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Author" content="Rithvik">
+    <meta name="keywords" content="hugo blog">
+    <link rel="stylesheet" href=https://rithvik78.github.io/css/syntax.css>
+    <link rel="stylesheet" href=https://rithvik78.github.io/css/style.css>
+    <script src="https://kit.fontawesome.com/1b7478c139.js" crossorigin="anonymous"></script>
+    <title>Rithvik</title>
+  </head><body><aside id="sidenav">
+    <header>
+    
+        <a href=https://rithvik78.github.io/><img src="https://rithvik78.github.io/avatar.png" alt="avatar"></a>
+        
+    
+
+    <a id="branding" href=https://rithvik78.github.io/>
+        
+            Rithvik
+        
+    </a>
+    </header>
+
+    <nav>
+        
+            		
+            <a href="/"
+                
+            >
+                <i class="fas fa-home fa-sm"></i>
+                <span>home</span>
+            </a>
+        
+            		
+            <a href="/blog/"
+                
+            >
+                <i class="fas fa-keyboard fa-ms"></i>
+                <span>blog</span>
+            </a>
+        
+            		
+            <a href="/tags"
+                
+            >
+                <i class="fas fa-tags fa-ms"></i>
+                <span>tags</span>
+            </a>
+        
+            		
+            <a href="https://github.com/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-github fa-ms"></i>
+                <span>github</span>
+            </a>
+        
+            		
+            <a href="https://twitter.com/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-twitter fa-ms"></i>
+                <span>twitter</span>
+            </a>
+        
+            		
+            <a href="https://dev.to/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-dev fa-ms"></i>
+                <span>dev</span>
+            </a>
+        
+            		
+            <a href="/contact"
+                
+            >
+                <i class="far fa-envelope"></i>
+                <span>contact</span>
+            </a>
+        
+    </nav>
+</aside>
+<main id="main">
+            <a href="javascript:void(0)" id="closebtn" onclick="navToggle()"><i class="fas fa-bars fa-lg"></i></a>
+            <div class="content">
+    
+    <h1 id="title">Predicting the Survival of Titanic Passengers</h1>
+    
+      
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#define-the-problem">Define the Problem</a></li>
+    <li><a href="#data-collection">Data Collection</a></li>
+    <li><a href="#prepare-data-for-consumption">Prepare Data for consumption</a>
+      <ul>
+        <li><a href="#importing-libraries">Importing Libraries</a></li>
+        <li><a href="#meet-and-greet-data">Meet and Greet Data</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-cs-of-data-cleaning-correcting-completing-creating-and-converting">4 C&rsquo;s of Data Cleaning: Correcting, Completing, Creating, and Converting</a>
+      <ul>
+        <li><a href="#clean-data">Clean Data</a></li>
+        <li><a href="#convert-formats">Convert Formats</a></li>
+        <li><a href="#double-check-cleaned-data">Double Check Cleaned Data</a></li>
+        <li><a href="#split-training-and-testing-data">Split Training and Testing Data</a></li>
+      </ul>
+    </li>
+    <li><a href="#exploratory-analysis-with-statistics">Exploratory Analysis with Statistics</a></li>
+    <li><a href="#model-data">Model Data</a></li>
+    <li><a href="#authors">Authors</a></li>
+  </ul>
+</nav>
+    <h2 id="define-the-problem">Define the Problem</h2>
+<p><img src="https://i.imgur.com/vNCcN2y.jpg" alt=""></p>
+<p>The sinking of the RMS Titanic is one of the most infamous shipwrecks in history. On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, killing 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international community and led to better safety regulations for ships.
+One of the reasons that the shipwreck led to such loss of life was that there were not enough lifeboats for the passengers and crew. Although there was some element of luck involved in surviving the sinking, some groups of people were more likely to survive than others, such as women, children, and the upper-class.
+In this challenge, we will complete the analysis of what sorts of people were likely to survive.</p>
+<h2 id="data-collection">Data Collection</h2>
+<p>The dataset is also given to us on a golden platter with test and train data at <a href="https://www.kaggle.com/c/titanic/data">Kaggle&rsquo;s Titanic: Machine Learning from Disaster</a></p>
+<h2 id="prepare-data-for-consumption">Prepare Data for consumption</h2>
+<p>Since Dataset was already provided to us on a golden platter. Normal processes in data wrangling, such as data architecture, governance, and extraction are out of scope. Thus, only data cleaning is in scope.</p>
+<ul>
+<li>We used the popular scikit-learn library to develop our machine learning algorithms.</li>
+<li>For data visualization, we will use the matplotlib and seaborn library.</li>
+</ul>
+<h3 id="importing-libraries">Importing Libraries</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="kn">import</span> <span class="nn">sys</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">IPython</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_output</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.gaussian_process</span> <span class="kn">import</span> <span class="n">GaussianProcessClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegressionCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span> 
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sklearn.metrics</span> <span class="k">as</span> <span class="nn">metrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">graphviz</span> 
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre></div><h3 id="meet-and-greet-data">Meet and Greet Data</h3>
+<p>This is the meet and greet step. Get to know your data by first name and learn a little bit about it. What does it look like (datatype and values), what makes it tick (independent/feature variables(s)), what&rsquo;s its goals in life (dependent/target variable(s)).</p>
+<p>We have imported the data and used sample() and info() functions to achieve this.</p>
+<ul>
+<li>
+<p>The Survived variable is our outcome or dependent variable. It is a binary nominal datatype of 1 for survived and 0 for did not survive. All other variables are potential predictor or independent variables. It&rsquo;s important to note, more predictor variables do not make a better model, but the right variables.</p>
+</li>
+<li>
+<p>The PassengerID and Ticket variables are assumed to be random unique identifiers, that have no impact on the outcome variable. Thus, they will be excluded from analysis.</p>
+</li>
+<li>
+<p>The Pclass variable is an ordinal datatype for the ticket class, a proxy for socio-economic status (SES), representing 1 = upper class, 2 = middle class, and 3 = lower class.</p>
+</li>
+<li>
+<p>The Name variable is a nominal datatype. It could be used in feature engineering to derive the gender from title, family size from surname, and SES from titles like doctor or master. Since these variables already exist, we&rsquo;ll make use of it to see if title, like master, makes a difference.</p>
+</li>
+<li>
+<p>The Sex and Embarked variables are a nominal datatype. They will be converted to dummy variables for mathematical calculations.</p>
+</li>
+<li>
+<p>The Age and Fare variable are continuous quantitative datatypes.</p>
+</li>
+<li>
+<p>The SibSp represents number of related siblings/spouse aboard and Parch represents number of related parents/children aboard. Both are discrete quantitative datatypes. This can be used for feature engineering to create a family size and is alone variable.</p>
+</li>
+<li>
+<p>The Cabin variable is a nominal datatype that can be used in feature engineering for approximate position on ship when the incident occurred and SES from deck levels. However, since there are many null values, it does not add value and thus is excluded from analysis.</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">data_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./data/train.csv&#39;</span><span class="p">)</span>
+<span class="n">data_val</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./data/test.csv&#39;</span><span class="p">)</span>
+<span class="n">data1</span> <span class="o">=</span> <span class="n">data_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">data_cleaner</span> <span class="o">=</span> <span class="p">[</span><span class="n">data1</span><span class="p">,</span> <span class="n">data_val</span><span class="p">]</span>
+<span class="nb">print</span> <span class="p">(</span><span class="n">data_raw</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+<span class="n">data_raw</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div><h2 id="4-cs-of-data-cleaning-correcting-completing-creating-and-converting">4 C&rsquo;s of Data Cleaning: Correcting, Completing, Creating, and Converting</h2>
+<p>In this stage, we will clean our data by 1) correcting aberrant values and outliers, 2) completing missing information, 3) creating new features for analysis, and 4) converting fields to the correct format for calculations and presentation.</p>
+<ol>
+<li>
+<p>Correcting: Reviewing the data, there does not appear to be any aberrant or non-acceptable data inputs. In addition, we see we may have potential outliers in age and fare. However, since they are reasonable values, we will wait until after we complete our exploratory analysis to determine if we should include or exclude from the dataset.</p>
+</li>
+<li>
+<p>Completing: There are null values or missing data in the age, cabin, and embarked field. Missing values can be bad, because some algorithms don&rsquo;t know how-to handle null values and will fail. While others, like decision trees, can handle null values. Thus, it&rsquo;s important to fix before we start modeling, because we will compare and contrast several models.</p>
+</li>
+<li>
+<p>Creating: Feature engineering is when we use existing features to create new features to determine if they provide new signals to predict our outcome. For this dataset, we will create a title feature to determine if it played a role in survival.</p>
+</li>
+<li>
+<p>Converting: Last, but certainly not least, we&rsquo;ll deal with formatting. There are no date or currency formats, but datatype formats. Our categorical data is imported as objects, which makes it difficult for mathematical calculations. For this dataset, we will convert object datatypes to categorical dummy variables.</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train columns with null values:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">data1</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-&#34;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test/Validation columns with null values:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">data_val</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-&#34;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">data_raw</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</code></pre></div><h3 id="clean-data">Clean Data</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">data_cleaner</span><span class="p">:</span>    
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Embarked&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Embarked&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Fare&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Fare&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">drop_column</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">,</span><span class="s1">&#39;Cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;Ticket&#39;</span><span class="p">]</span>
+<span class="n">data1</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">drop_column</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">data1</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-&#34;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_val</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</code></pre></div><h3 id="convert-formats">Convert Formats</h3>
+<p>We will convert categorical data to dummy variables for mathematical analysis. There are multiple ways to encode categorical variables; we will use the sklearn and pandas functions.</p>
+<p>In this step, we will also define our x (independent/features/explanatory/predictor/etc.) and y (dependent/target/outcome/response/etc.) variables for data modeling.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">label</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">data_cleaner</span><span class="p">:</span>    
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Sex_Code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Sex&#39;</span><span class="p">])</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Embarked_Code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Embarked&#39;</span><span class="p">])</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Title_Code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">])</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;AgeBin_Code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;AgeBin&#39;</span><span class="p">])</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;FareBin_Code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;FareBin&#39;</span><span class="p">])</span>
+
+
+<span class="n">Target</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span>
+
+<span class="n">data1_x</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Sex&#39;</span><span class="p">,</span><span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Embarked&#39;</span><span class="p">,</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span><span class="s1">&#39;SibSp&#39;</span><span class="p">,</span> <span class="s1">&#39;Parch&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Fare&#39;</span><span class="p">,</span> <span class="s1">&#39;FamilySize&#39;</span><span class="p">,</span> <span class="s1">&#39;IsAlone&#39;</span><span class="p">]</span>
+<span class="n">data1_x_calc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Sex_Code&#39;</span><span class="p">,</span><span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Embarked_Code&#39;</span><span class="p">,</span> <span class="s1">&#39;Title_Code&#39;</span><span class="p">,</span><span class="s1">&#39;SibSp&#39;</span><span class="p">,</span> <span class="s1">&#39;Parch&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Fare&#39;</span><span class="p">]</span>
+<span class="n">data1_xy</span> <span class="o">=</span>  <span class="n">Target</span> <span class="o">+</span> <span class="n">data1_x</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Original X Y: &#39;</span><span class="p">,</span> <span class="n">data1_xy</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="n">data1_x_bin</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Sex_Code&#39;</span><span class="p">,</span><span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Embarked_Code&#39;</span><span class="p">,</span> <span class="s1">&#39;Title_Code&#39;</span><span class="p">,</span> <span class="s1">&#39;FamilySize&#39;</span><span class="p">,</span> <span class="s1">&#39;AgeBin_Code&#39;</span><span class="p">,</span> <span class="s1">&#39;FareBin_Code&#39;</span><span class="p">]</span>
+<span class="n">data1_xy_bin</span> <span class="o">=</span> <span class="n">Target</span> <span class="o">+</span> <span class="n">data1_x_bin</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Bin X Y: &#39;</span><span class="p">,</span> <span class="n">data1_xy_bin</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+
+<span class="n">data1_dummy</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="n">data1_x</span><span class="p">])</span>
+<span class="n">data1_x_dummy</span> <span class="o">=</span> <span class="n">data1_dummy</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">data1_xy_dummy</span> <span class="o">=</span> <span class="n">Target</span> <span class="o">+</span> <span class="n">data1_x_dummy</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dummy X Y: &#39;</span><span class="p">,</span> <span class="n">data1_xy_dummy</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+
+<span class="n">data1_dummy</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+</code></pre></div><h3 id="double-check-cleaned-data">Double Check Cleaned Data</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train columns with null values: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">data1</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-&#34;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="n">data1</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-&#34;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test/Validation columns with null values: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">data_val</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-&#34;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="n">data_val</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-&#34;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">data_raw</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</code></pre></div><h3 id="split-training-and-testing-data">Split Training and Testing Data</h3>
+<p>The test file provided is really validation data for competition submission. So, we will use sklearn function to split the training data in two datasets; 75/25 split. This is important, so we don&rsquo;t overfit our model. We will use sklearn&rsquo;s train_test_split function. we also used sklearn&rsquo;s cross validation functions, that splits our dataset into train and test for data modeling comparison.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">train1_x</span><span class="p">,</span> <span class="n">test1_x</span><span class="p">,</span> <span class="n">train1_y</span><span class="p">,</span> <span class="n">test1_y</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="n">data1_x_calc</span><span class="p">],</span> <span class="n">data1</span><span class="p">[</span><span class="n">Target</span><span class="p">],</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">train1_x_bin</span><span class="p">,</span> <span class="n">test1_x_bin</span><span class="p">,</span> <span class="n">train1_y_bin</span><span class="p">,</span> <span class="n">test1_y_bin</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="n">data1_x_bin</span><span class="p">],</span> <span class="n">data1</span><span class="p">[</span><span class="n">Target</span><span class="p">]</span> <span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">train1_x_dummy</span><span class="p">,</span> <span class="n">test1_x_dummy</span><span class="p">,</span> <span class="n">train1_y_dummy</span><span class="p">,</span> <span class="n">test1_y_dummy</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data1_dummy</span><span class="p">[</span><span class="n">data1_x_dummy</span><span class="p">],</span> <span class="n">data1</span><span class="p">[</span><span class="n">Target</span><span class="p">],</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Data1 Shape: </span><span class="si">{}</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data1</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Train1 Shape: </span><span class="si">{}</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train1_x</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Test1 Shape: </span><span class="si">{}</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test1_x</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+<span class="n">train1_x_bin</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div><h2 id="exploratory-analysis-with-statistics">Exploratory Analysis with Statistics</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data1_x</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data1</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s1">&#39;float64&#39;</span> <span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Survival Correlation by:&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">data1</span><span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">Target</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        
+
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">],</span><span class="n">data1</span><span class="p">[</span><span class="n">Target</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+</code></pre></div><pre tabindex="0"><code>Survival Correlation by: Sex
+      Sex  Survived
+0  female  0.742038
+1    male  0.188908
+---------- 
+
+Survival Correlation by: Pclass
+   Pclass  Survived
+0       1  0.629630
+1       2  0.472826
+2       3  0.242363
+---------- 
+
+Survival Correlation by: Embarked
+  Embarked  Survived
+0        C  0.553571
+1        Q  0.389610
+2        S  0.339009
+---------- 
+
+Survival Correlation by: Title
+    Title  Survived
+0  Master  0.575000
+1    Misc  0.444444
+2    Miss  0.697802
+3      Mr  0.156673
+4     Mrs  0.792000
+---------- 
+
+Survival Correlation by: SibSp
+   SibSp  Survived
+0      0  0.345395
+1      1  0.535885
+2      2  0.464286
+3      3  0.250000
+4      4  0.166667
+5      5  0.000000
+6      8  0.000000
+---------- 
+
+Survival Correlation by: Parch
+   Parch  Survived
+0      0  0.343658
+1      1  0.550847
+2      2  0.500000
+3      3  0.600000
+4      4  0.000000
+5      5  0.200000
+6      6  0.000000
+---------- 
+
+Survival Correlation by: FamilySize
+   FamilySize  Survived
+0           1  0.303538
+1           2  0.552795
+2           3  0.578431
+3           4  0.724138
+4           5  0.200000
+5           6  0.136364
+6           7  0.333333
+7           8  0.000000
+8          11  0.000000
+---------- 
+
+Survival Correlation by: IsAlone
+   IsAlone  Survived
+0        0  0.505650
+1        1  0.303538
+---------- 
+
+Survived    0    1
+Title             
+Master     17   23
+Misc       15   12
+Miss       55  127
+Mr        436   81
+Mrs        26   99
+</code></pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="mi">12</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">231</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Fare&#39;</span><span class="p">],</span> <span class="n">showmeans</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">meanline</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Fare Boxplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fare ($)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">232</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">],</span> <span class="n">showmeans</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">meanline</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Age Boxplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Age (Years)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">233</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;FamilySize&#39;</span><span class="p">],</span> <span class="n">showmeans</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">meanline</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Family Size Boxplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Family Size (#)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">234</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">data1</span><span class="p">[</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Fare&#39;</span><span class="p">],</span> <span class="n">data1</span><span class="p">[</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Fare&#39;</span><span class="p">]],</span> 
+         <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">],</span><span class="n">label</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span><span class="s1">&#39;Dead&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Fare Histogram by Survival&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Fare ($)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;# of Passengers&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">235</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">data1</span><span class="p">[</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Age&#39;</span><span class="p">],</span> <span class="n">data1</span><span class="p">[</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;Age&#39;</span><span class="p">]],</span> 
+         <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">],</span><span class="n">label</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span><span class="s1">&#39;Dead&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Age Histogram by Survival&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Age (Years)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;# of Passengers&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">236</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">data1</span><span class="p">[</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;FamilySize&#39;</span><span class="p">],</span> <span class="n">data1</span><span class="p">[</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;FamilySize&#39;</span><span class="p">]],</span> 
+         <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">],</span><span class="n">label</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span><span class="s1">&#39;Dead&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Family Size Histogram by Survival&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Family Size (#)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;# of Passengers&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</code></pre></div><p><img src="https://i.imgur.com/n6MIgFz.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">fig</span><span class="p">,</span> <span class="n">saxis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Embarked&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">saxis</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">saxis</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;IsAlone&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">saxis</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;FareBin&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span>  <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">saxis</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;AgeBin&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span>  <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">saxis</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;FamilySize&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">saxis</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+</code></pre></div><p><img src="https://i.imgur.com/15tR3oC.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">axis1</span><span class="p">,</span><span class="n">axis2</span><span class="p">,</span><span class="n">axis3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Fare&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axis1</span><span class="p">)</span>
+<span class="n">axis1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Pclass vs Fare Survival Comparison&#39;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data1</span><span class="p">,</span> <span class="n">split</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axis2</span><span class="p">)</span>
+<span class="n">axis2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Pclass vs Age Survival Comparison&#39;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span><span class="s1">&#39;FamilySize&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axis3</span><span class="p">)</span>
+<span class="n">axis3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Pclass vs Family Size Survival Comparison&#39;</span><span class="p">)</span>
+</code></pre></div><p><img src="https://i.imgur.com/XZZ2CCs.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">fig</span><span class="p">,</span> <span class="n">qaxis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;Embarked&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">qaxis</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axis1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Sex vs Embarked Survival Comparison&#39;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">ax</span>  <span class="o">=</span> <span class="n">qaxis</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">axis1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Sex vs Pclass Survival Comparison&#39;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;IsAlone&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">ax</span>  <span class="o">=</span> <span class="n">qaxis</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">axis1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Sex vs IsAlone Survival Comparison&#39;</span><span class="p">)</span>
+</code></pre></div><p><img src="https://i.imgur.com/tjCrHia.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">maxis1</span><span class="p">,</span> <span class="n">maxis2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&#34;FamilySize&#34;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&#34;Survived&#34;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&#34;Sex&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+              <span class="n">palette</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;male&#34;</span><span class="p">:</span> <span class="s2">&#34;blue&#34;</span><span class="p">,</span> <span class="s2">&#34;female&#34;</span><span class="p">:</span> <span class="s2">&#34;pink&#34;</span><span class="p">},</span>
+              <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;*&#34;</span><span class="p">,</span> <span class="s2">&#34;o&#34;</span><span class="p">],</span> <span class="n">linestyles</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;-&#34;</span><span class="p">,</span> <span class="s2">&#34;--&#34;</span><span class="p">],</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">maxis1</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&#34;Pclass&#34;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&#34;Survived&#34;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&#34;Sex&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span>
+              <span class="n">palette</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;male&#34;</span><span class="p">:</span> <span class="s2">&#34;blue&#34;</span><span class="p">,</span> <span class="s2">&#34;female&#34;</span><span class="p">:</span> <span class="s2">&#34;pink&#34;</span><span class="p">},</span>
+              <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;*&#34;</span><span class="p">,</span> <span class="s2">&#34;o&#34;</span><span class="p">],</span> <span class="n">linestyles</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;-&#34;</span><span class="p">,</span> <span class="s2">&#34;--&#34;</span><span class="p">],</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">maxis2</span><span class="p">)</span>
+</code></pre></div><p><img src="https://i.imgur.com/BWEwGST.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">e</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s1">&#39;Embarked&#39;</span><span class="p">)</span>
+<span class="n">e</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="n">ci</span><span class="o">=</span><span class="mf">95.0</span><span class="p">,</span> <span class="n">palette</span> <span class="o">=</span> <span class="s1">&#39;deep&#39;</span><span class="p">)</span>
+<span class="n">e</span><span class="o">.</span><span class="n">add_legend</span><span class="p">()</span>
+</code></pre></div><p><img src="https://i.imgur.com/ZsoaZ2X.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">a</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span> <span class="n">data1</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">4</span> <span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span> <span class="kc">True</span> <span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span> <span class="p">,</span> <span class="n">data1</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+<span class="n">a</span><span class="o">.</span><span class="n">add_legend</span><span class="p">()</span>
+</code></pre></div><p><img src="https://i.imgur.com/R3rs1E3.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">h</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="n">row</span> <span class="o">=</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.75</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">add_legend</span><span class="p">()</span>
+</code></pre></div><p><img src="https://i.imgur.com/pRXyPeP.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">pp</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data1</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="n">palette</span> <span class="o">=</span> <span class="s1">&#39;deep&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">diag_kind</span> <span class="o">=</span> <span class="s1">&#39;kde&#39;</span><span class="p">,</span> <span class="n">diag_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">plot_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">pp</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticklabels</span><span class="o">=</span><span class="p">[])</span>
+</code></pre></div><p><img src="https://i.imgur.com/3kGKe5G.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="k">def</span> <span class="nf">correlation_heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">_</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    <span class="n">colormap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">diverging_palette</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">as_cmap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">(),</span> 
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">colormap</span><span class="p">,</span>
+        <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+        <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;shrink&#39;</span><span class="p">:</span><span class="mf">.9</span> <span class="p">},</span> 
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+        <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+        <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fontsize&#39;</span><span class="p">:</span><span class="mi">12</span> <span class="p">}</span>
+    <span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Pearson Correlation of Features&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.05</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="n">correlation_heatmap</span><span class="p">(</span><span class="n">data1</span><span class="p">)</span>
+</code></pre></div><p><img src="https://i.imgur.com/RRobEOM.jpg" alt=""></p>
+<h2 id="model-data">Model Data</h2>
+<p>Data Science is a multidisciplinary field between mathematics (i.e. statistics, linear algebra, etc.), computer science (i.e. programming languages, computer systems, etc.) and business management (i.e. communication, subject-matter knowledge, etc.).
+There are many machine learning algorithms, however they can be reduced to four categories: classification, regression, clustering, or dimensionality reduction, depending on your target variable and data modeling goals.
+We can generalize that a continuous target variable requires a regression algorithm and a discrete target variable requires a classification algorithm.
+Since our problem is predicting if a passenger survived or did not survive, this is a discrete target variable. We will use a classification algorithm from the sklearn library to begin our analysis.</p>
+<p>We have implemented RandomForestClassifier, GaussianProcessClassifier, LogisticRegressionCV, GaussianNB, KNeighborsClassifier, DecisionTreeClassifier</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">MLA</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">RandomForestClassifier</span><span class="p">(),</span>
+    <span class="n">GaussianProcessClassifier</span><span class="p">(),</span>
+    <span class="n">LogisticRegressionCV</span><span class="p">(),</span>
+    <span class="n">GaussianNB</span><span class="p">(),</span>
+    <span class="n">KNeighborsClassifier</span><span class="p">(),</span>
+    <span class="n">DecisionTreeClassifier</span><span class="p">(),</span>
+    <span class="p">]</span>
+
+<span class="n">cv_split</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">.3</span><span class="p">,</span> <span class="n">train_size</span> <span class="o">=</span> <span class="mf">.6</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">)</span> <span class="c1"># run model 10x with 60/30 split intentionally leaving out 10%</span>
+
+<span class="n">MLA_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MLA Name&#39;</span><span class="p">,</span> <span class="s1">&#39;MLA Parameters&#39;</span><span class="p">,</span><span class="s1">&#39;MLA Train Accuracy Mean&#39;</span><span class="p">,</span> <span class="s1">&#39;MLA Test Accuracy Mean&#39;</span><span class="p">,</span> <span class="s1">&#39;MLA Test Accuracy 3*STD&#39;</span> <span class="p">,</span><span class="s1">&#39;MLA Time&#39;</span><span class="p">]</span>
+<span class="n">MLA_compare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="n">MLA_columns</span><span class="p">)</span>
+
+<span class="n">MLA_predict</span> <span class="o">=</span> <span class="n">data1</span><span class="p">[</span><span class="n">Target</span><span class="p">]</span>
+
+<span class="n">row_index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">alg</span> <span class="ow">in</span> <span class="n">MLA</span><span class="p">:</span>
+
+    <span class="n">MLA_name</span> <span class="o">=</span> <span class="n">alg</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="n">MLA_compare</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_index</span><span class="p">,</span> <span class="s1">&#39;MLA Name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MLA_name</span>
+    <span class="n">MLA_compare</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_index</span><span class="p">,</span> <span class="s1">&#39;MLA Parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">alg</span><span class="o">.</span><span class="n">get_params</span><span class="p">())</span>
+    
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">alg</span><span class="p">,</span> <span class="n">data1</span><span class="p">[</span><span class="n">data1_x_bin</span><span class="p">],</span> <span class="n">data1</span><span class="p">[</span><span class="n">Target</span><span class="p">],</span> <span class="n">cv</span>  <span class="o">=</span> <span class="n">cv_split</span><span class="p">)</span>
+
+    <span class="n">MLA_compare</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_index</span><span class="p">,</span> <span class="s1">&#39;MLA Time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[</span><span class="s1">&#39;fit_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">MLA_compare</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_index</span><span class="p">,</span> <span class="s1">&#39;MLA Train Accuracy Mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[</span><span class="s1">&#39;score_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">MLA_compare</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_index</span><span class="p">,</span> <span class="s1">&#39;MLA Test Accuracy Mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[</span><span class="s1">&#39;test_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>   
+    <span class="n">MLA_compare</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_index</span><span class="p">,</span> <span class="s1">&#39;MLA Test Accuracy 3*STD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[</span><span class="s1">&#39;test_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">*</span><span class="mi">3</span>
+    
+
+    <span class="n">alg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="n">data1_x_bin</span><span class="p">],</span> <span class="n">data1</span><span class="p">[</span><span class="n">Target</span><span class="p">])</span>
+    <span class="n">MLA_predict</span><span class="p">[</span><span class="n">MLA_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">alg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="n">data1_x_bin</span><span class="p">])</span>
+    
+    <span class="n">row_index</span><span class="o">+=</span><span class="mi">1</span>
+
+    
+<span class="n">MLA_compare</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MLA Test Accuracy Mean&#39;</span><span class="p">],</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">MLA_compare</span>
+</code></pre></div><p><img src="https://i.imgur.com/Na8VSiF.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;MLA Test Accuracy Mean&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;MLA Name&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">MLA_compare</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Machine Learning Algorithm Accuracy Score </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Accuracy Score (%)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Algorithm&#39;</span><span class="p">)</span>
+</code></pre></div><p><img src="https://i.imgur.com/07pNlTp.png" alt=""></p>
+<p>We have achieved an accuracy of 83% by implementing Random Forest Classification.</p>
+<h2 id="authors">Authors</h2>
+<ul>
+<li><a href="https://twitter.com/MvpAbhishek">ABhishek Bharadwaj</a></li>
+<li><a href="https://twitter.com/SSVatsav">Sampat</a></li>
+<li><a href="https://twitter.com/">RV Abhishek Barla</a></li>
+<li><a href="https://twitter.com/rith_vik_7">Rithvik</a></li>
+</ul>
+
+    
+    <div class="nav-next-prev">
+        <div class="nav-prev">
+            
+                <a href="https://rithvik78.github.io/blog/mlproject/"><i class="fas fa-chevron-left"></i></a>
+            
+        </div>
+        <a class="nav-top" href="#">top</i></a>
+        <div class="nav-next">
+            
+                <a href="https://rithvik78.github.io/blog/esproject/"><i class="fas fa-chevron-right"></i></a>
+            
+        </div>
+    </div>
+    
+
+            </div><footer>
+<div class="footer-content">
+
+
+<p class="copyright meta">Copyright © 2021 Rithvik ❤️ from HUGO.</p>
+
+</div>
+</footer></main>
+    </body>
+    <script src=https://rithvik78.github.io/js/navbutton.js></script>
+</html>
