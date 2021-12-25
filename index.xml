@@ -14,7 +14,7 @@
       <pubDate>Sun, 12 Dec 2021 16:13:30 +0530</pubDate>
       
       <guid>https://vukkarithvik.tech/blog/urlshortener/</guid>
-      <description>Introduction Flask is a framework for building web applications utilizing Python and SQLite with sqlalchemy is a database engine that can be used to store application data.
+      <description>Introduction Flask is a framework for building web applications utilizing Python and SQLite [here with sqlalchemy ] is a database engine that can be used to store application data.
 Here, We wil be buliding a URL shortener, a service that takes any URL and generates a short URL, similar to tinyurl or bit.ly.
 We are going to generate random strings for the alias using python library random.
 We will be using Flask, SQLite to build your URL shortener.</description>
