@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MemoryForensics on Rithvik</title>
+    <link>https://vukkarithvik.tech/tags/memoryforensics/</link>
+    <description>Recent content in MemoryForensics on Rithvik</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2021 Rithvik ❤️ from HUGO.</copyright>
+    <lastBuildDate>Mon, 12 Apr 2021 10:19:10 +0530</lastBuildDate><atom:link href="https://vukkarithvik.tech/tags/memoryforensics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TRUST ISSUES [200]</title>
+      <link>https://vukkarithvik.tech/blog/trustissues/</link>
+      <pubDate>Mon, 12 Apr 2021 10:19:10 +0530</pubDate>
+      
+      <guid>https://vukkarithvik.tech/blog/trustissues/</guid>
+      <description>Solved by Rithvik and ABhishek Bharadwaj
+Trust-Issues Source
+so we were basically given with a memorydump and pdf.
+PDF Analysis Since we got a pdf, We tried all type of stego tools and ended with binwalk
+ binwalk -e confidential.pdf
+ We got a vhd - virtual hard disk from binwalk.. So let us analyse that.
+Here we found header and replaced it with head and got the vhd. But it was bitlocker encrypted.</description>
+    </item>
+    
+  </channel>
+</rss>

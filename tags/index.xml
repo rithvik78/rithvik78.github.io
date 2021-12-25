@@ -125,5 +125,23 @@
       <description></description>
     </item>
     
+    <item>
+      <title>MemoryForensics</title>
+      <link>https://vukkarithvik.tech/tags/memoryforensics/</link>
+      <pubDate>Mon, 12 Apr 2021 10:19:10 +0530</pubDate>
+      
+      <guid>https://vukkarithvik.tech/tags/memoryforensics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>volatility</title>
+      <link>https://vukkarithvik.tech/tags/volatility/</link>
+      <pubDate>Mon, 12 Apr 2021 10:19:10 +0530</pubDate>
+      
+      <guid>https://vukkarithvik.tech/tags/volatility/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
