@@ -97,19 +97,21 @@
       
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#trust-issues">Trust-Issues</a>
+    <li><a href="#challenge-description">Challenge Description</a></li>
+    <li><a href="#solution">Solution</a>
       <ul>
         <li><a href="#pdf-analysis">PDF Analysis</a></li>
         <li><a href="#memory-analysis">Memory Analysis</a></li>
       </ul>
     </li>
-    <li><a href="#solved-by">Solved by</a></li>
+    <li><a href="#flag">Flag</a></li>
   </ul>
 </nav>
-    <p><img src="https://i.imgur.com/x94bpaJ.png" alt=""></p>
-<h2 id="trust-issues">Trust-Issues</h2>
+    <p>Solved by: <a href="https://twitter.com/MvpAbhishek"><strong>ABhishek Bharadwaj</strong></a>, <a href="https://twitter.com/rith_vik_7"><strong>Rithvik</strong></a></p>
+<h2 id="challenge-description">Challenge Description</h2>
 <p><img src="https://i.imgur.com/AwkE6C2.png" alt=""></p>
 <p><a href="https://drive.google.com/file/d/1RCMrWHjw_UBLeYVcOnLcQvVT7hF3753A/view">Source</a></p>
+<h2 id="solution">Solution</h2>
 <p>so we were basically given with a memorydump and pdf.</p>
 <h3 id="pdf-analysis">PDF Analysis</h3>
 <p>Since we got a pdf, We tried all type of stego tools and ended with binwalk</p>
@@ -235,6 +237,7 @@ Name:    74006800650020006400610074006100.7965708720dcbe1fbd5b.d.requestbin.net
 </code></pre><p>Decoding it from hex gives us recovery key for bitlocker</p>
 <p>Recovery-key: <code>299981-297792-361471-261789-114642-633501-520685-433719</code></p>
 <p>Unlocking the vhd using recovery key gives us the flag</p>
+<h2 id="flag">Flag</h2>
 <pre tabindex="0"><code>p_ctf{1_wi$h_y0u_DNSee_th3_kEy}
 </code></pre><p>References:</p>
 <ul>
@@ -244,11 +247,6 @@ Name:    74006800650020006400610074006100.7965708720dcbe1fbd5b.d.requestbin.net
 <li>
 <p>The Art of Memory Forensics: Detecting Malware and Threats in Windows, Linux, and Mac Memory (Wile05)</p>
 </li>
-</ul>
-<h2 id="solved-by">Solved by</h2>
-<ul>
-<li><a href="https://twitter.com/MvpAbhishek">ABhishek Bharadwaj</a></li>
-<li><a href="https://twitter.com/rith_vik_7">Rithvik</a></li>
 </ul>
 
     
