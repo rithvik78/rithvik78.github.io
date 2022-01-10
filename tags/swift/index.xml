@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Swift on Rithvik</title>
+    <link>https://vukkarithvik.tech/tags/swift/</link>
+    <description>Recent content in Swift on Rithvik</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2021 Rithvik ❤️ from HUGO.</copyright>
+    <lastBuildDate>Mon, 10 Jan 2022 17:33:19 +0530</lastBuildDate><atom:link href="https://vukkarithvik.tech/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reading from the Standard Input (stdin) in Swift</title>
+      <link>https://vukkarithvik.tech/blog/stdinswift/</link>
+      <pubDate>Mon, 10 Jan 2022 17:33:19 +0530</pubDate>
+      
+      <guid>https://vukkarithvik.tech/blog/stdinswift/</guid>
+      <description>There are many situations where we need to read input from StdIn. For instance, this is how inputs are provided in competitive programming websites such as Hackerrank.
+Reading from StdIn readLine() function is used to read the input from the user.
+readLine(strippingNewLine: Bool) Usually strippingNewLine is set to true, So that it will identify newline newline characters and character combinations are not a part of the input. Else, they will also be considered as the input.</description>
+    </item>
+    
+  </channel>
+</rss>

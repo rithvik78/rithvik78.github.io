@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Author" content="Rithvik">
+    <meta name="keywords" content="hugo blog">
+    <link rel="stylesheet" href=https://vukkarithvik.tech/css/syntax.css>
+    <link rel="stylesheet" href=https://vukkarithvik.tech/css/style.css>
+    <script src="https://kit.fontawesome.com/1b7478c139.js" crossorigin="anonymous"></script>
+    <title>Rithvik</title>
+  </head><body><aside id="sidenav">
+    <header>
+    
+        <a href=https://vukkarithvik.tech/><img src="https://vukkarithvik.tech/avatar.png" alt="avatar"></a>
+        
+    
+
+    <a id="branding" href=https://vukkarithvik.tech/>
+        
+            Rithvik
+        
+    </a>
+    </header>
+
+    <nav>
+        
+            		
+            <a href="/"
+                
+            >
+                <i class="fas fa-home fa-sm"></i>
+                <span>home</span>
+            </a>
+        
+            		
+            <a href="/blog/"
+                
+            >
+                <i class="fas fa-keyboard fa-ms"></i>
+                <span>blog</span>
+            </a>
+        
+            		
+            <a href="/tags"
+                
+            >
+                <i class="fas fa-tags fa-ms"></i>
+                <span>tags</span>
+            </a>
+        
+            		
+            <a href="https://github.com/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-github fa-ms"></i>
+                <span>github</span>
+            </a>
+        
+            		
+            <a href="https://twitter.com/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-twitter fa-ms"></i>
+                <span>twitter</span>
+            </a>
+        
+            		
+            <a href="https://dev.to/rithvik78"
+                
+                    target="_blank"
+                
+            >
+                <i class="fab fa-dev fa-ms"></i>
+                <span>dev</span>
+            </a>
+        
+            		
+            <a href="/contact"
+                
+            >
+                <i class="far fa-envelope"></i>
+                <span>contact</span>
+            </a>
+        
+    </nav>
+</aside>
+<main id="main">
+            <a href="javascript:void(0)" id="closebtn" onclick="navToggle()"><i class="fas fa-bars fa-lg"></i></a>
+            <div class="content">
+    
+    <h1 id="title">Reading from the Standard Input (stdin) in Swift</h1>
+    
+      
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#reading-from-stdin">Reading from StdIn</a>
+      <ul>
+        <li><a href="#reading-string-from-stdin">Reading string from StdIn</a></li>
+        <li><a href="#reading-int-from-stdin">Reading Int from StdIn</a></li>
+        <li><a href="#reading-array-of-string-from-stdin">Reading array of String from StdIn</a></li>
+        <li><a href="#reading-array-of-int-from-stdin">Reading array of Int from StdIn</a></li>
+      </ul>
+    </li>
+    <li><a href="#testing">Testing</a></li>
+  </ul>
+</nav>
+    <p>There are many situations where we need to read input from StdIn. For instance, this is how inputs are provided in competitive programming websites such as <a href="https://www.hackerrank.com/">Hackerrank</a>.</p>
+<h2 id="reading-from-stdin">Reading from StdIn</h2>
+<p><a href="https://developer.apple.com/documentation/swift/1641199-readline">readLine()</a> function is used to read the input from the user.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-swift" data-lang="swift"><span class="n">readLine</span><span class="p">(</span><span class="n">strippingNewLine</span><span class="p">:</span> <span class="nb">Bool</span><span class="p">)</span>
+</code></pre></div><p>Usually <code>strippingNewLine</code> is set to <code>true</code>, So that it will identify newline newline characters and character combinations are not a part of the input. Else, they will also be considered as the input.</p>
+<p>And <code>print()</code> function is used to write the output to StdIn.</p>
+<h3 id="reading-string-from-stdin">Reading string from StdIn</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">str</span> <span class="p">=</span> <span class="n">readLine</span><span class="p">(</span><span class="n">strippingNewline</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span><span class="o">!</span>
+</code></pre></div><p>It will be fine to force unwrap the String if we are sure about the situation else it may leads to crash.</p>
+<h3 id="reading-int-from-stdin">Reading Int from StdIn</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">str</span> <span class="p">=</span> <span class="nb">Int</span><span class="p">(</span><span class="n">readLine</span><span class="p">(</span><span class="n">strippingNewline</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span><span class="o">!</span><span class="p">)</span><span class="o">!</span>
+</code></pre></div><h3 id="reading-array-of-string-from-stdin">Reading array of String from StdIn</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">let</span> <span class="nv">array</span> <span class="p">=</span> <span class="p">(</span><span class="n">readLine</span><span class="p">(</span><span class="n">strippingNewline</span><span class="p">:</span> <span class="kc">true</span><span class="p">))?.</span><span class="bp">split</span> <span class="p">{</span><span class="nv">$0</span> <span class="p">==</span> <span class="s">&#34; &#34;</span><span class="p">}.</span><span class="bp">map</span> <span class="p">(</span><span class="nb">String</span><span class="p">.</span><span class="kd">init</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">array</span><span class="p">!)</span>
+</code></pre></div><p><img src="https://i.imgur.com/2Ge2Y2o.png" alt=""></p>
+<h3 id="reading-array-of-int-from-stdin">Reading array of Int from StdIn</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="nc">Foundation</span>
+<span class="kd">var</span> <span class="nv">arr</span> <span class="p">=</span> <span class="n">readLine</span><span class="p">()</span><span class="o">!</span><span class="p">.</span><span class="n">components</span><span class="p">(</span><span class="n">separatedBy</span><span class="p">:</span> <span class="s">&#34; &#34;</span><span class="p">).</span><span class="bp">map</span><span class="p">{</span> <span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">String</span><span class="p">)-&gt;(</span><span class="nb">Int</span><span class="p">)</span> <span class="k">in</span>
+    <span class="k">return</span> <span class="nb">Int</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">!</span>
+<span class="p">}</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">array</span><span class="p">!)</span>
+</code></pre></div><p><img src="https://i.imgur.com/9Juq9ea.png" alt=""></p>
+<h2 id="testing">Testing</h2>
+<p><code>readline()</code> returns nil in Playgrounds. So, in order to use this function we need to create Command Line Tool application.</p>
+<p>File -&gt; New -&gt; Project.. (or simply ⇧⌘N) -&gt; macOS -&gt; Command Line Tool.
+<img src="https://i.imgur.com/DPaIAeO.png" alt=""></p>
+<p>After creating the project we can use it just as Playgrounds.</p>
+
+    
+    <div class="nav-next-prev">
+        <div class="nav-prev">
+            
+                <a href="https://vukkarithvik.tech/blog/urlshortener/"><i class="fas fa-chevron-left"></i></a>
+            
+        </div>
+        <a class="nav-top" href="#">top</i></a>
+        <div class="nav-next">
+            
+                <a class="grayed-out" href="javascript:void()"><i class="fas fa-chevron-right"></i></a>
+            
+        </div>
+    </div>
+    
+
+            </div><footer>
+<div class="footer-content">
+
+
+<p class="copyright meta">Copyright © 2021 Rithvik ❤️ from HUGO.</p>
+
+</div>
+</footer></main>
+    </body>
+    <script src=https://vukkarithvik.tech/js/navbutton.js></script>
+</html>
